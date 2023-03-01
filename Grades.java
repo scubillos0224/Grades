@@ -1,50 +1,75 @@
+import java.text.*;
 import java.util.*;
 
 public class Grades {
     public static void main(String[] args) {
+        System.out.println("Hello! Welcome to my GPA calculator.");
         Scanner scnr = new Scanner(System.in);
+        Integer totalPoints = 0;
+        Integer totalCredits = 0;
 
-        Integer credits = 0;
-        boolean validCredits = false;
+        boolean moreClasses = false;
+
         do {
-            System.out.println("Enter number of credits:");
-            String creditsString = scnr.nextLine();
 
-            try {
-                credits = Integer.parseInt(creditsString);
+            Integer credits = 0;
+            boolean validCredits = true;
+            do {
                 validCredits = true;
-            } catch (NumberFormatException nfe) {
-                System.out.println("Please enter a valid integer: ");
-            }
-        } while (validCredits == false);
+                System.out.println("Enter number of credits:");
+                String creditsString = scnr.nextLine();
 
-        System.out.println("Enter grade:");
-        String grade = scnr.nextLine();
+                try {
+                    credits = Integer.parseInt(creditsString);
 
-        Integer gradeVal = 0;
-        if (grade.equalsIgnoreCase("A")) {
-            gradeVal = 4;
-        } else if (grade.equalsIgnoreCase("B")) {
-            gradeVal = 3;
-        } else if (grade.equalsIgnoreCase("C")) {
-            gradeVal = 2;
-        } else if (grade.equalsIgnoreCase("D")) {
-            gradeVal = 1;
-        } else if (grade.equalsIgnoreCase("F")) {
-            gradeVal = 0;
-        } else {
-            System.out.println("You did not enter a valid grade.");
-        }
+                } catch (NumberFormatException nfe) {
+                    System.out.println("Please enter a valid integer: ");
+                    validCredits = false;
+                }
+            } while (!validCredits);
 
-        Integer points = gradeVal * credits;
+            boolean validGrade = true;
+            Integer gradeVal = 0;
+            String grade = "";
 
-        Integer gpa = points / credits;
+            do {
+                validGrade = true;
+                System.out.println("Enter grade:");
+                grade = scnr.nextLine();
 
-        System.out.println("Credits: " + credits);
-        System.out.println("Grade: " + grade);
-        System.out.println("Points: " + points);
-        System.out.println("GPA: " + gpa);
+                if (grade.equalsIgnoreCase("A")) {
+                    gradeVal = 4;
+                } else if (grade.equalsIgnoreCase("B")) {
+                    gradeVal = 3;
+                } else if (grade.equalsIgnoreCase("C")) {
+                    gradeVal = 2;
+                } else if (grade.equalsIgnoreCase("D")) {
+                    gradeVal = 1;
+                } else if (grade.equalsIgnoreCase("F")) {
+                    gradeVal = 0;
+                } else {
+                    System.out.println("You did not enter a valid grade.");
+                    validGrade = false;
+                }
+            } while (!validGrade);
+            Integer points = gradeVal * credits;
+            totalPoints += points;
+            totalCredits += credits;
 
+            System.out.println("Would you like to enter another class? (Y/N)");
+            String moreClassesString = scnr.nextLine();
+            moreClasses = moreClassesString.equalsIgnoreCase("Y");
+
+        } while (moreClasses);
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        Double gpa = Double.valueOf(totalPoints) / Double.valueOf(totalCredits);
+
+        System.out.println("Credits: " + totalCredits);
+        System.out.println("Points: " + totalPoints);
+        System.out.println("GPA: " + df.format(gpa));
+        System.out.println("Enjoy your day! Goodluck on your educational endeavors!");
         scnr.close();
     }
 }
